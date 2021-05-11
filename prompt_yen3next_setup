@@ -10,6 +10,7 @@
 #
 # Screenshots:
 #   http://i.imgur.com/HyRvv.png
+#
 
 
 function python-info-simple-yen3 {
@@ -26,6 +27,7 @@ function python-info-simple-yen3 {
   typeset -gA python_info
 
   if [[ -n "${VIRTUAL_ENV}" ]]; then
+    export VIRTUAL_ENV_DISABLE_PROMPT=1
     zformat -f virtualenv_formatted "$virtualenv_format" "v:${VIRTUAL_ENV:t}"
   fi
 
