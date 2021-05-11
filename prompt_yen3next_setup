@@ -12,7 +12,6 @@
 #   http://i.imgur.com/HyRvv.png
 #
 
-
 function python-info-simple-yen3 {
   local virtualenv_format=""
   local virtualenv_formatted=""
@@ -147,4 +146,5 @@ function prompt_yen3next_preview {
 }
 
 prompt_yen3next_setup "$@"
+
 # vim: ft=zsh
