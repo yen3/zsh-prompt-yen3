@@ -10,7 +10,46 @@
 #
 # Screenshots:
 #   http://i.imgur.com/HyRvv.png
-#
+
+
+function python-info-simple-yen3 {
+  local virtualenv_format=""
+  local virtualenv_formatted=""
+
+  zstyle -s ':prezto:module:python:info:virtualenv' format 'virtualenv_format'
+  if [[ -z "${virtualenv_format}" ]]; then
+    virtualenv_format="[%v]"
+  fi
+
+  # Clean up previous $python_info.
+  unset python_info
+  typeset -gA python_info
+
+  if [[ -n "${VIRTUAL_ENV}" ]]; then
+    zformat -f virtualenv_formatted "$virtualenv_format" "v:${VIRTUAL_ENV:t}"
+  fi
+
+  if [[ -n "${CONDA_DEFAULT_ENV}" ]]; then
+    zformat -f virtualenv_formatted "$virtualenv_format" "v:${CONDA_DEFAULT_ENV:t}"
+  fi
+
+  if [[ -z "${virtualenv_formatted}" ]]; then
+    # Get pyenv setting
+    if (( $+commands[pyenv] )); then
+      local pyenv_global_version=$(pyenv global)
+      local pyenv_version="${"$(pyenv version)"%% *}"
+
+      if [[ "${pyenv_version}" != "${pyenv_global_version}" ]] && \
+        [[ "${pyenv_version}" != "system" ]]; then
+        zformat -f virtualenv_formatted "$virtualenv_format" "v:${pyenv_version:t}"
+      fi
+    fi
+  fi
+
+  if [[ -n "${virtualenv_formatted}" ]]; then
+    python_info[virtualenv]="${virtualenv_formatted}"
+  fi
+}
 
 function prompt_yen3next_precmd {
   # Check for untracked files or updated submodules since vcs_info does not.
@@ -24,9 +63,8 @@ function prompt_yen3next_precmd {
 
   vcs_info 'prompt'
 
-  if (( $+functions[python-info] )); then
-    python-info
-  fi
+  # Get python virtualenv name
+  python-info-simple-yen3
 }
 
 function prompt_yen3next_setup {
