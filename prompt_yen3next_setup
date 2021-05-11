@@ -131,7 +131,7 @@ function prompt_yen3next_setup {
   # Define prompts.
   PROMPT="%(?..%F{red}%B-> [%?]%b%f
 )%F{yellow}%~%f [%n%f@%m%f] [%T] "'${vcs_info_msg_0_} ${_prompt_yen3next_colors[2]}$python_info[virtualenv]%f'"
-"'${editor_info[keymap]} '
+"'$ '
   RPROMPT=''
 }
 
